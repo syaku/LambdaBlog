@@ -1,0 +1,10 @@
+<%- include('header') -%>
+<% articles.forEach(function(article){ %>
+  <div class="row">
+    <div class="col-md-12">
+      <%- article.publishDate.format('/YYYY/MM/DD') %>
+      <a href="<%- article.publishDate.format('/YYYY/MM/DD') %>/<%- article.key %>/"><%= article.title %></a>
+    </div>
+  </div>
+<% }); %>
+<%- include('footer') -%>
