@@ -1,10 +1,30 @@
 <%- include('header') -%>
-<% articles.forEach(function(article){ %>
-  <div class="row">
-    <div class="col-md-12">
-      <%- article.publishDate.format('/YYYY/MM/DD') %>
-      <a href="<%- article.publishDate.format('/YYYY/MM/DD') %>/<%- article.key %>/"><%= article.title %></a>
+<div class="row articles">
+  <div class="col-md-12">
+  <% articles.forEach(function(article){ %>
+    <div>
+      <div class="article index" style="background-image: url('<%= article.thumbnail ? article.thumbnail : 'https://lh3.googleusercontent.com/-WanBP0IAhpM/Vsny6sNcIvI/AAAAAAAAEGs/FTCVMN4Ofb8/s800-Ic42/-shared-img-thumb-PAK86_gucyagucya15205011_TP_V.jpg' %>')">
+        <hgroup>
+          <h2 class="title"><a href="<%- article.timestamp.format('/YYYY/MM/DD') %>/<%- article.key %>/"><%= article.title %></a></h2>
+          <p><time class="label label-default" datetime="<%= article.timestamp.format('YYYY-MM-DD') %>"><%= article.timestamp.format('YYYY年MM月DD日') %></time> <span class="label label-primary"><%= settings.categoryName[article.category] %></span></p>
+        </hgroup>
+      </div>
     </div>
+  <% }); %>
   </div>
-<% }); %>
+</div>
+<div id="pager" class="row">
+  <div class="col-md-12">
+    <nav>
+      <ul class="pager">
+        <% if (currentPage < maxPage) { %>
+        <li class="pull-left"><a href="/<%= prefix %>index<%= currentPage + 1 %>.html">&larr; Older</a></li>
+        <% } %>
+        <% if (currentPage > 1) { %>
+        <li class="pull-right"><a href="/<%= prefix %><% if (currentPage > 2) { %>index<%= currentPage - 1 %>.html<% } %>">Newer &rarr;</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
+</div>
 <%- include('footer') -%>

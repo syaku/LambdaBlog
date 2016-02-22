@@ -1,8 +1,86 @@
-    </div>
-  <footer class="navbar navbar-default navbar-fixed-bottom">
+    </main>
+  <footer>
     <div class="container">
-      <p class="navbar-text">Copyright (C) 2012 SYAKU All Rights Reserved.</p>
+      <div class="row">
+        <div class="col-md-3">
+          <h4>Archives</h4>
+          <ul class="list-unstyled">
+            <% calendar.forEach(function(month){ %>
+              <li><a href="/<%= month %>/"><%= moment(month).format('YYYY年MM月') %></a></li>
+            <% }) %>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h4>Categories</h4>
+          <ul class="list-unstyled">
+            <% categories.forEach(function(category){ %>
+              <li><a href="/archive/category/<%= category %>/"><%= settings.categoryName[category] %></a></li>
+            <% }) %>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <h4>About me.</h4>
+            </div>
+            <div class="col-md-4">
+              <img style="width:100px;height:100px;" src="//www.gravatar.com/avatar/bf73f66e691dad0add1458e4352e9887?s=100" alt="avatar" itemprop="image" id="avatar">
+            </div>
+            <div class="col-md-8">
+              <p><a href="http://plus.google.com/114867807906638049811?rel=author" itemprop="url"><span itemprop="name" rel="author">Takayuki TAKEMURA</span></a></p>
+              <p>東京でプログラマーやってます。イラスト程度には痩せたい。</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h4>About this site.</h4>
+              <p>このブログの記載内容は私個人の主張・嗜好・思い込みであり、私が所属する企業・団体を含むいかなる組織の公式見解でもありません。</p>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p id="copyright" class="pull-right">Copyright (C) 2012 Takayuki TAKEMURA All Rights Reserved.</p>
+        </div>
+      </div>
     </div>
   </footer>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.5";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    <script>
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.async=true;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    </script>
+    <script type="text/javascript">
+      window.___gcfg = {lang: 'ja'};
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/platform.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>
+    <script type="text/javascript", src="https://b.hatena.ne.jp/js/bookmark_button.js", charset="utf-8", async="async"></script>
+    <script type="text/javascript">
+      !function(d,i){if(!d.getElementById(i)){var j=d.createElement("script");j.id=i;j.async=true;j.src="https://widgets.getpocket.com/v1/j/btn.js?v=1";var w=d.getElementById(i);d.body.appendChild(j);}}(document,"pocket-btn-js");
+    </script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-35711724-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <input type="hidden" name="OBKey" value="QeLGFjwyQ0CvcIeuly75Ag==">
+    <script LANGUAGE="JavaScript">var OBCTm='1404597594452';</script>
+    <script LANGUAGE="JavaScript" src="//widgets.outbrain.com/claim.js"></script>
   </body>
 </html>
