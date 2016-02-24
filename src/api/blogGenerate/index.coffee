@@ -16,7 +16,7 @@ config = {
 ssg = new SSG()
 
 exports.handler = (event, context) ->
-  ssg.setup(config).index().category().calendar().articles().do((err) ->
+  ssg.setup(config).index().category().calendar().articles().feed().do((err) ->
     if err
       context.done(err)
     else

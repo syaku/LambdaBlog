@@ -20,8 +20,8 @@ baseParam = {
 }
 
 indexTemplate = ejs.compile(read('./template/index.ejs', 'utf8'), {filename: './template/index.ejs'})
-categoryTemplate = ejs.compile(read('./template/article.ejs', 'utf8'), {filename: './template/article.ejs'})
 articleTemplate = ejs.compile(read('./template/article.ejs', 'utf8'), {filename: './template/article.ejs'})
+rssTemplate = ejs.compile(read('./template/rss.ejs', 'utf8'), {filename: './template/rss.ejs'})
 
 class SiteGenerator
   setup: (settings) ->
@@ -63,7 +63,7 @@ class SiteGenerator
       async.forEachOf(@config.calendar
         (posts, calendar, callback) =>
           pages = _.chain(posts).sortBy((post) -> moment(post.timestamp).valueOf()*-1).chunk(10).value()
-          @_indexPage("#{moment(calendar).format('YYYY年MM月')}", "#{calendar}/", pages, callback)
+          @_indexPage("#{moment(calendar).utcOffset('+09:00').format('YYYY年MM月')}", "#{calendar}/", pages, callback)
         (err)->callback(err)
       )
     )
@@ -99,10 +99,11 @@ class SiteGenerator
               post = yaml.safeLoad(data.Body.toString('UTF-8'))
               post.timestamp = moment(post.timestamp)
               post.body = marked(post.body)
-              path = "#{post.timestamp.format('YYYY/MM/DD')}/#{key}/index.html"
+              url = "#{post.timestamp.utcOffset('+09:00').format('YYYY/MM/DD')}/#{key}/"
+              path = "#{url}index.html"
               post.category = if post.category then post.category else 'uncategorized'
               html = articleTemplate(_.extend({
-                url: "#{post.timestamp.format('YYYY/MM/DD')}/#{key}/"
+                url: url
                 thumbnail: if post.thumbnail then post.thumbnail else null
                 key: key
                 categories: @categories
@@ -126,8 +127,32 @@ class SiteGenerator
     )
     return this
 
-  do: (callback)->
+  feed: ->
+    @chain.push((callback) =>
+      console.log('feed.')
+      posts = _.chain(@config.posts).map((post, key) -> _.extend(post, {key: key}))
+        .sortBy((post) -> moment(post.timestamp).valueOf()*-1).chunk(30).value()
+      @_rssFeed(posts[0], callback)
+    )
+    return this
+
+  do: (callback) ->
     async.series(@chain, (err, result) -> callback(err))
+
+  _rssFeed: (posts, callback) ->
+    path = 'feed.rss'
+    html = rssTemplate({
+      articles: posts
+      settings: @settings
+      moment: moment
+    })
+    param = _.extend(
+      {Key: path, Body: html, ContentType: 'text/xml', CacheControl: 'max-age=86400, s-maxage=300, no-transform, public'}
+      baseParam
+    )
+    s3.putObject(param, (err, data) ->
+      callback()
+    )
 
   _indexPage: (title, prefix, pages, callback) ->
     cnt = 1

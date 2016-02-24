@@ -5,8 +5,8 @@
     <div>
       <div class="article index" style="background-image: url('<%= article.thumbnail ? article.thumbnail : 'https://lh3.googleusercontent.com/-WanBP0IAhpM/Vsny6sNcIvI/AAAAAAAAEGs/FTCVMN4Ofb8/s800-Ic42/-shared-img-thumb-PAK86_gucyagucya15205011_TP_V.jpg' %>')">
         <hgroup>
-          <h2 class="title"><a href="<%- article.timestamp.format('/YYYY/MM/DD') %>/<%- article.key %>/"><%= article.title %></a></h2>
-          <p><time class="label label-default" datetime="<%= article.timestamp.format('YYYY-MM-DD') %>"><%= article.timestamp.format('YYYY年MM月DD日') %></time> <span class="label label-primary"><%= settings.categoryName[article.category] %></span></p>
+          <h2 class="title"><a href="<%- article.timestamp.utcOffset('+09:00').format('/YYYY/MM/DD') %>/<%- article.key %>/"><%= article.title %></a></h2>
+          <p><time class="label label-default" datetime="<%= article.timestamp.utcOffset('+09:00').format('YYYY-MM-DD') %>"><%= article.timestamp.utcOffset('+09:00').format('YYYY年MM月DD日') %></time> <span class="label label-primary"><%= settings.categoryName[article.category] %></span></p>
         </hgroup>
       </div>
     </div>

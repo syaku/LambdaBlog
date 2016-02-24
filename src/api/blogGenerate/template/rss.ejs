@@ -1,0 +1,17 @@
+<!DOCTYPE xml>
+<rss version="2.0">
+    <channel>
+       <title>SEVENSPIRALS</title>
+       <link>https://www.sevenspirals.net/</link>
+       <description>日々思いついたことをつらつらと書いているブログ</description>
+       <% articles.forEach(function(article){ %>
+           <item>
+               <title><%= article.title %></title>
+               <guid>https://www.sevenspirals.net/<%= moment(article.timestamp).format('YYYY/MM/DD') %>/<%= article.key %></guid>
+               <link>https://www.sevenspirals.net/<%= moment(article.timestamp).format('YYYY/MM/DD') %>/<%= article.key %></link>
+               <description><![CDATA[<%= article.body %>]]></description>
+               <pubDate><%= moment(article.timestamp).utcOffset('+09:00').format() %></pubDate>
+           </item>
+       <% }) %>
+    </channel>
+</rss>
