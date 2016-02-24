@@ -97,9 +97,12 @@ class SiteGenerator
               callback(err)
             else
               post = yaml.safeLoad(data.Body.toString('UTF-8'))
-              post.timestamp = moment(post.timestamp)
+              post.timestamp = moment("#{post.timestamp}:00+09:00")
               post.body = marked(post.body)
+              console.log post.timestamp.format()
               url = "#{post.timestamp.utcOffset('+09:00').format('YYYY/MM/DD')}/#{key}/"
+              console.log post.timestamp.format()
+              console.log url
               path = "#{url}index.html"
               post.category = if post.category then post.category else 'uncategorized'
               html = articleTemplate(_.extend({
