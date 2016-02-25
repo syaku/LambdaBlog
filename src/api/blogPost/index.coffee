@@ -29,7 +29,6 @@ exports.handler = (event, context) ->
           s3.getObject {Bucket: settings.bucketName, Key: key}, (err, data)->
             post = yaml.safeLoad(data.Body.toString('UTF-8'))
             post.timestamp = moment(post.timestamp).subtract(9, 'hour').utcOffset('+09:00').format()
-            delete post.body
             key = key.replace(settings.prefix, '').replace(settings.suffix, '')
             config.posts[key] = post
             callback()
