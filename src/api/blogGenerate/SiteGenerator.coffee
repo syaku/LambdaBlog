@@ -85,45 +85,36 @@ class SiteGenerator
     #記事ページ生成
     @chain.push((callback) =>
       console.log('articles.')
-      async.each(
-        _.keys(@config.posts)
-        (key, callback) =>
+      async.forEachOf(
+        @config.posts
+        (post, key, callback) =>
           param = _.extend(
             {Key: "#{@settings.prefix}#{key}#{@settings.suffix}"}
             baseParam
           )
-          s3.getObject(param, (err, data) =>
+          post.body = marked(post.body)
+          console.log post.timestamp.format()
+          url = "#{post.timestamp.utcOffset('+09:00').format('YYYY/MM/DD')}/#{key}/"
+          path = "#{url}index.html"
+          post.category = if post.category then post.category else 'uncategorized'
+          html = articleTemplate(_.extend({
+            url: url
+            thumbnail: if post.thumbnail then post.thumbnail else null
+            key: key
+            categories: @categories
+            calendar: @calendar
+            settings: @settings
+            moment: moment
+          }, post))
+          param = _.extend(
+            {Key: path, Body: html, ContentType: 'text/html', CacheControl: 'max-age=86400, s-maxage=300, no-transform, public'}
+            baseParam
+          )
+          s3.putObject(param, (err, data) ->
             if err
               callback(err)
             else
-              post = yaml.safeLoad(data.Body.toString('UTF-8'))
-              post.timestamp = moment("#{post.timestamp}:00+09:00")
-              post.body = marked(post.body)
-              console.log post.timestamp.format()
-              url = "#{post.timestamp.utcOffset('+09:00').format('YYYY/MM/DD')}/#{key}/"
-              console.log post.timestamp.format()
-              console.log url
-              path = "#{url}index.html"
-              post.category = if post.category then post.category else 'uncategorized'
-              html = articleTemplate(_.extend({
-                url: url
-                thumbnail: if post.thumbnail then post.thumbnail else null
-                key: key
-                categories: @categories
-                calendar: @calendar
-                settings: @settings
-                moment: moment
-              }, post))
-              param = _.extend(
-                {Key: path, Body: html, ContentType: 'text/html', CacheControl: 'max-age=86400, s-maxage=300, no-transform, public'}
-                baseParam
-              )
-              s3.putObject(param, (err, data) ->
-                if err
-                  callback(err)
-                else
-                  callback()
-              )
+              callback()
           )
         (err)->callback(err)
       )

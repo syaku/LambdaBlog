@@ -9,7 +9,7 @@
                <title><%= article.title %></title>
                <guid>https://www.sevenspirals.net/<%= moment(article.timestamp).format('YYYY/MM/DD') %>/<%= article.key %>/</guid>
                <link>https://www.sevenspirals.net/<%= moment(article.timestamp).format('YYYY/MM/DD') %>/<%= article.key %>/</link>
-               <description><![CDATA[<img src='<%= article.thumbnail %>'><%= article.body %>]]></description>
+               <description><![CDATA[<img src='<%= article.thumbnail %>'><%- article.body %>]]></description>
                <pubDate><%= moment(article.timestamp).utcOffset('+09:00').format() %></pubDate>
            </item>
        <% }) %>
